@@ -1,5 +1,5 @@
 import deepneuralnet as net
-import random 
+import random
 import tflearn.datasets.mnist as mnist
 from skimage import io
 from fractions import Fraction
@@ -8,10 +8,12 @@ model = net.model
 path_to_model = 'final-model.tflearn'
 X, Y, testX, testY= mnist.load_data(one_hot=True)
 model.load(path_to_model)
+
 # Randomly take an image from the test set
 correct=0
 test_result=[]
 test_label=[]
+
 
 #doFlip = False #Defines if we want to analyse the images normaly or switched
 
@@ -60,7 +62,7 @@ def count_all(vec):
         elif (vec[x]==9):
             buckets[9]=buckets[9]+1
 
-    
+
     return buckets
 
 for j in range (0,10000):
@@ -79,14 +81,14 @@ for j in range (0,10000):
     	correct=correct+1
         test_result.append(prediction)
         test_label.append(count)
-        
+
         #print(correct)
     else:
         #wrong.append(count)
         #correct=correct
         test_result.append(count)
         test_label.append(prediction)
- 
+
 
 accuracytest=float(correct/10000.0)
 #wrong_alg=count_all(wrong)
@@ -97,10 +99,10 @@ train_label=[]
 
 for j in range (0,10000):
 
-    x = X[j].reshape((28, 28, 1))    
+    x = X[j].reshape((28, 28, 1))
     if(doFlip):
         x=flipX(x)
-    
+
     result = model.predict([x])[0] # Predict
     prediction = result.tolist().index(max(result)) # The index represents the number predicted in this case
     #print("Prediction", prediction)
@@ -117,7 +119,7 @@ for j in range (0,10000):
     else:
         train_result.append(prediction)
         train_label.append(count)
- 
+
 # print(X[1].reshape((28, 28, 1)))
 
 accuracytrain=float(correct_train/10000.0)
@@ -134,4 +136,3 @@ print("Accuracy for train set=", accuracytrain)
 with tf.Session():
    print('Confusion Matrix: \n\n', tf.Tensor.eval(confusion_train,feed_dict=None, session=None))
 #print(wrong_alg_train)
-
